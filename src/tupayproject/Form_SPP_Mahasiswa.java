@@ -5,24 +5,22 @@
  */
 package tupayproject;
 
+import javax.swing.*;
+import java.sql.*;
+
 /**
  * @author zen
  */
 public class Form_SPP_Mahasiswa extends javax.swing.JFrame {
-
-	StringBuilder sb;
-
 	/**
 	 * Creates new form Form_SPP_Mahasiswa
 	 */
 	public Form_SPP_Mahasiswa() {
 		initComponents();
+		setLocationRelativeTo(null);
 
 		//Membuat text area tidak bisa diedit
 		ta_print.setEditable(false);
-
-		sb = new StringBuilder();
-
 	}
 
 	/**
@@ -32,133 +30,148 @@ public class Form_SPP_Mahasiswa extends javax.swing.JFrame {
 	 */
 
 	// Method untuk SPP tetap
-	public double bayarSppTetap(double sppTetap) {
-		Object pilihan = cmb_generation.getSelectedItem();
-		String pilihanStr = pilihan.toString();
+	public double bayarSppTetap() {
+		String generation = cmb_generation.getSelectedItem().toString();
+		String faculty = cmb_faculty.getSelectedItem().toString();
+		int facultyIndex = cmb_faculty.getSelectedIndex();
+
+		int generationInteger = Integer.parseInt(generation);
 
 		// Mendapatkan jumlah SPP variabel berdasarkan tipe "Fakultas"
-		int angkatan = Integer.parseInt(pilihanStr);
-		if (cmb_faculty.getSelectedItem().equals("Fakultas Sains dan Teknologi")) {
-			if (angkatan == 2021) {
-				sppTetap = 2250000;
-			} else if (angkatan == 2020) {
-				sppTetap = 2150000;
-			} else if (angkatan == 2019) {
-				sppTetap = 2050000;
-			} else if (angkatan == 2018) {
-				sppTetap = 2000000;
-			} else if (angkatan == 2017) {
-				sppTetap = 1950000;
-			} else if (angkatan == 2016) {
-				sppTetap = 1850000;
-			}
-		} else if (cmb_faculty.getSelectedItem().equals("Fakultas Bisnis dan Humaniora")) {
-			if (angkatan == 2021) {
-				sppTetap = 1750000;
-			} else if (angkatan == 2020) {
-				sppTetap = 1800000;
-			} else if (angkatan == 2019) {
-				sppTetap = 2050000;
-			} else if (angkatan == 2018) {
-				sppTetap = 2000000;
-			} else if (angkatan == 2017) {
-				sppTetap = 1950000;
-			} else if (angkatan == 2016) {
-				sppTetap = 1850000;
-			}
-		} else if (cmb_faculty.getSelectedItem().equals("Progam Diploma")) {
-			if (angkatan == 2021) {
-				sppTetap = 1750000;
-			} else if (angkatan == 2020) {
-				sppTetap = 1800000;
-			} else if (angkatan == 2019) {
-				sppTetap = 2050000;
-			} else if (angkatan == 2018) {
-				sppTetap = 2000000;
-			} else if (angkatan == 2017) {
-				sppTetap = 1950000;
-			} else if (angkatan == 2016) {
-				sppTetap = 1850000;
-			}
+		switch (facultyIndex) {
+			case 0:
+				if (generationInteger == 2021) {
+					return 2250000;
+				} else if (generationInteger == 2020) {
+					return 2150000;
+				} else if (generationInteger == 2019) {
+					return 2050000;
+				} else if (generationInteger == 2018) {
+					return 2000000;
+				} else if (generationInteger == 2017) {
+					return 1950000;
+				} else if (generationInteger == 2016) {
+					return 1850000;
+				}
+				break;
+			case 1:
+				if (generationInteger == 2021) {
+					return 1750000;
+				} else if (generationInteger == 2020) {
+					return 1800000;
+				} else if (generationInteger == 2019) {
+					return 2050000;
+				} else if (generationInteger == 2018) {
+					return 2000000;
+				} else if (generationInteger == 2017) {
+					return 1950000;
+				} else if (generationInteger == 2016) {
+					return 1850000;
+				}
+				break;
+			case 2:
+				if (generationInteger == 2021) {
+					return 1750000;
+				} else if (generationInteger == 2020) {
+					return 1800000;
+				} else if (generationInteger == 2019) {
+					return 2050000;
+				} else if (generationInteger == 2018) {
+					return 2000000;
+				} else if (generationInteger == 2017) {
+					return 1950000;
+				} else if (generationInteger == 2016) {
+					return 1850000;
+				}
+				break;
+			default:
+				break;
 		}
 
-		return sppTetap;
+		return 0;
 	}
 
 	// Method untuk SPP variabel
-	public double bayarSppVar(double sppVariabel) {
-		Object pilihan = cmb_generation.getSelectedItem();
-		String pilihanStr = pilihan.toString();
-		int angkatan = Integer.parseInt(pilihanStr);
-		String sks = txt_credits.getText();
-		int jumlah_sks = Integer.parseInt(sks);
+	public double bayarSppVar() {
+		int generation = Integer.parseInt(cmb_generation.getSelectedItem().toString());
+		double total_credits = Double.parseDouble(txt_credits.getText());
+		int departementSelectedIndex = cmb_departement.getSelectedIndex();
 
-		// Mendapatkan jumlah SPP variabel berdasarkan tipe "Fakultas"
-		if (cmb_departement.getSelectedItem().equals("Fakultas Sains dan Teknologi")) {
-			if (angkatan == 2021) {
-				sppVariabel = 190000 * jumlah_sks;
-			} else if (angkatan == 2020) {
-				sppVariabel = 180000 * jumlah_sks;
-			} else if (angkatan == 2019) {
-				sppVariabel = 170000 * jumlah_sks;
-			} else if (angkatan == 2018) {
-				sppVariabel = 160000 * jumlah_sks;
-			} else if (angkatan == 2017) {
-				sppVariabel = 150000 * jumlah_sks;
-			} else if (angkatan == 2016) {
-				sppVariabel = 140000 * jumlah_sks;
-			}
-		} else if (cmb_departement.getSelectedItem().equals("Fakultas Bisnis dan Humaniora")) {
-			if (angkatan == 2021) {
-				sppVariabel = 185000 * jumlah_sks;
-			} else if (angkatan == 2020) {
-				sppVariabel = 175000 * jumlah_sks;
-			} else if (angkatan == 2019) {
-				sppVariabel = 165000 * jumlah_sks;
-			} else if (angkatan == 2018) {
-				sppVariabel = 155000 * jumlah_sks;
-			} else if (angkatan == 2017) {
-				sppVariabel = 145000 * jumlah_sks;
-			} else if (angkatan == 2016) {
-				sppVariabel = 135000 * jumlah_sks;
-			}
+		// TODO: Membuat algoritma untuk mendapatkan jumlah SPP variabel berdasarkan tipe "Jurusan".
+		switch (departementSelectedIndex) {
+			case 0:
+					if (generation == 2021) {
+						return 190000 * total_credits;
+					} else if (generation == 2020) {
+						return 180000 * total_credits;
+					} else if (generation == 2019) {
+						return 170000 * total_credits;
+					} else if (generation == 2018) {
+						return 160000 * total_credits;
+					} else if (generation == 2017) {
+						return 150000 * total_credits;
+					} else if (generation == 2016) {
+						return 140000 * total_credits;
+					}
+				break;
+			case 1:
+				if (generation == 2021) {
+					return 185000 * total_credits;
+				} else if (generation == 2020) {
+					return 175000 * total_credits;
+				} else if (generation == 2019) {
+					return 165000 * total_credits;
+				} else if (generation == 2018) {
+					return 155000 * total_credits;
+				} else if (generation == 2017) {
+					return 145000 * total_credits;
+				} else if (generation == 2016) {
+					return 135000 * total_credits;
+				}
+				break;
+			default:
+				JOptionPane.showMessageDialog(this, "An unknown error has occured", "Error", JOptionPane.ERROR_MESSAGE);
+				break;
 		}
 
-		return sppVariabel;
+		return 0;
 	}
 
 	// Menghitung total SPP
-	public double totalSpp(double totalSpp) {
-		totalSpp = bayarSppTetap(0) + bayarSppVar(totalSpp);
-		return totalSpp;
+	public double totalSpp() {
+		return bayarSppTetap() + bayarSppVar();
 	}
 
-	// Mencetak info SPP mahasiswa sebelum disimpan ke database
+	// Mencetak info SPP mahasiswa sebelum disimpan ke database.
 	public void printAll() {
-		sb.append("\n\n------- INFO SPP MAHASISWA -------\n");
-		sb.append("\nNama Mahasiswa\t : " + txt_name.getText());
-		sb.append("\nNIM\t\t : " + txt_StudentNumber.getText());
-		sb.append("\nAngkatan\t\t : " + cmb_generation.getSelectedItem());
+		// Membuat StringBuilder untuk mengabunggkan teks.
+		StringBuilder sb = new StringBuilder();
+
+		// Menggabungkan String yang ada pada setiap kolom menjadi satu.
+		sb.append("\n\n------- Student Tuition Bill Info -------\n");
+		sb.append("\nStudent Name\t\t : " + txt_name.getText());
+		sb.append("\nStudent ID\t\t : " + txt_StudentNumber.getText());
+		sb.append("\nStudent Batch\t\t : " + cmb_generation.getSelectedItem());
 		sb.append("\nSemester\t\t : " + cmb_semester.getSelectedItem());
-		sb.append("\nFakultas\t\t : " + cmb_faculty.getSelectedItem());
-		sb.append("\nProgram Studi\t : " + cmb_departement.getSelectedItem());
-		sb.append("\nTotal SKS\t\t : " + txt_credits.getText());
+		sb.append("\nFaculty\t\t : " + cmb_faculty.getSelectedItem());
+		sb.append("\nMajor Study\t\t : " + cmb_departement.getSelectedItem());
+		sb.append("\nCredit total\t\t : " + txt_credits.getText());
 		sb.append("\n\n");
-		sb.append("\nSPP Tetap\t\t : " + bayarSppTetap(0));
-		sb.append("\nSPP Variabel\t\t : " + bayarSppVar(0));
-		sb.append("\nSPP Total\t\t : " + totalSpp(0) + "\n\n\n\n");
+		sb.append("\nFixed Tuition Bill\t : " + bayarSppTetap());
+		sb.append("\nVariable Tuition Bill\t : " + bayarSppVar());
+		sb.append("\nTuition Bill Total\t : " + totalSpp() + "\n\n\n\n");
 		ta_print.setText(sb.toString());
 	}
 
-	// Menghapus seluruh inputan user
+	// Menghapus seluruh inputan user.
 	public void hapus() {
 		txt_StudentNumber.setText(null);
 		txt_credits.setText(null);
 		txt_name.setText(null);
-		cmb_departement.setSelectedItem(null);
-		cmb_faculty.setSelectedItem(null);
-		cmb_generation.setSelectedItem(null);
-		cmb_semester.setSelectedItem(null);
+		cmb_departement.setSelectedIndex(0);
+		cmb_faculty.setSelectedIndex(0);
+		cmb_generation.setSelectedIndex(0);
+		cmb_semester.setSelectedIndex(0);
 		ta_print.setText(null);
 	}
 
@@ -242,13 +255,13 @@ public class Form_SPP_Mahasiswa extends javax.swing.JFrame {
 
 		jLabel6.setText("Faculty");
 
-		cmb_faculty.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Fakultas Bisnis dan Humaniora", "Fakultas Sains dan Teknologi", "Program Diploma"}));
+		cmb_faculty.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Faculty of Business and Humanities", "Faculty of Science and Technology", "Diploma Program"}));
 
-		jLabel7.setText("Departement");
+		jLabel7.setText("Major");
 
-		cmb_departement.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Informatika", "Teknik Elektro", "Manajemen", "Akuntansi", "Pariwisata", "Teknik Komputer"}));
+		cmb_departement.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Informatics", "Electrical Engineering", "Management", "Accounting", "Tourism", "Computer Engineering"}));
 
-		jLabel8.setText("Generation");
+		jLabel8.setText("Student batch");
 
 		jLabel9.setText("Current semester");
 
@@ -406,21 +419,48 @@ public class Form_SPP_Mahasiswa extends javax.swing.JFrame {
 	}//GEN-LAST:event_txt_StudentNumberActionPerformed
 
 	private void btn_checkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_checkMouseClicked
-		// TODO add your handling code here:
 		this.printAll();
 	}//GEN-LAST:event_btn_checkMouseClicked
 
 	private void btn_resetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_resetMouseClicked
-		// TODO add your handling code here:
 		this.hapus();
 	}//GEN-LAST:event_btn_resetMouseClicked
 
 	private void btn_submitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_submitMouseClicked
-		// TODO add your handling code here:
-		// INI DIISI SAMA CRUD (INSERT DATA KE TABEL HISTORY TRANSACTION & TRANSACTION LIST)
+		// TODO: INI DI ISI SAMA CRUD (INSERT DATA KE TABEL HISTORY TRANSACTION & TRANSACTION LIST)
+		try {
+			String DriverUrl = "jdbc:mysql://localhost:8001/akademik"; // Alamat driver untuk MySQL.
+			Connection connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970"); // mendapatkan koneksi melalui alamat variabel DriverUrl.
 
-		this.setVisible(false);
-		new History_Transaction().setVisible(true);
+			// Menyiapkan query MySQL sebelum di eksekusi.
+			PreparedStatement queryStatement = connection.prepareStatement("insert into transaction_list (student_name, student_id, student_faculty, student_major, student_batch, student_semester, student_credit, cf_fixed, cf_variable, cf_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+			// Memasukkan variabel-variabel yang ada pada setiap kolom formulir kedalam query MySQL.
+			queryStatement.setString(1, txt_name.getText());
+			queryStatement.setString(2, txt_StudentNumber.getText());
+			queryStatement.setString(3, cmb_faculty.getSelectedItem().toString());
+			queryStatement.setString(4, cmb_departement.getSelectedItem().toString());
+			queryStatement.setString(5, cmb_generation.getSelectedItem().toString());
+			queryStatement.setString(6, cmb_semester.getSelectedItem().toString());
+			queryStatement.setInt(7, Integer.parseInt(txt_credits.getText()));
+
+			queryStatement.setDouble(8, bayarSppTetap());
+			queryStatement.setDouble(9, bayarSppVar());
+			queryStatement.setDouble(10, totalSpp());
+
+			queryStatement.executeQuery(); // Jalankan query yang telah disiapkan.
+
+			JOptionPane.showMessageDialog(this, "Data successfully saved.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+			this.setVisible(false);
+			new Home().setVisible(true);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(this, "Failed to save a data. Please try again.", "Error occured.", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+
+		// Diusangkan untuk sementara.
+		// new History_Transaction().setVisible(true);
 	}//GEN-LAST:event_btn_submitMouseClicked
 
 	/**
