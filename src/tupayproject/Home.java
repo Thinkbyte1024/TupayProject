@@ -16,6 +16,7 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -54,7 +55,7 @@ public class Home extends javax.swing.JFrame {
 
         btn_masuk_mahasiswa.setBackground(new java.awt.Color(0, 0, 0));
         btn_masuk_mahasiswa.setForeground(new java.awt.Color(255, 255, 255));
-        btn_masuk_mahasiswa.setText("Mahasiswa");
+        btn_masuk_mahasiswa.setText("College Student");
         btn_masuk_mahasiswa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btn_masuk_mahasiswaMouseClicked(evt);

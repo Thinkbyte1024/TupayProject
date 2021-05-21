@@ -5,6 +5,10 @@
  */
 package tupayproject;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
+
 /**
  *
  * @author zen
@@ -16,6 +20,41 @@ public class Admin_TransactionList extends javax.swing.JFrame {
      */
     public Admin_TransactionList() {
         initComponents();
+        setLocationRelativeTo(null);
+
+        // TODO: TAMBAHKAN QUERY DAN TAMPILKAN DALAM BENTUK TABEL.
+        try {
+            String DriverUrl = "jdbc:mysql://localhost:8001/akademik";
+            Connection connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970");
+
+            // Menjalankan query untuk mengambil data pada database.
+            Statement query = (Statement) connection.createStatement();
+            ResultSet dataResult = query.executeQuery("select * from transaction_list");
+
+            // Membuat DefaultTableModel untuk menampilkan data-data yang ada pada database.
+            String[] columnHeaders = {"Name", "Student ID", "Faculty", "Department", "Generation", "Semester", "Course Credit"};
+            DefaultTableModel transactionModel = new DefaultTableModel(columnHeaders, 0);
+
+            while (dataResult.next()) {
+                // Variabel untuk menampung data yang telah diambil dari database.
+                String StudentName = dataResult.getString(2);
+                String StudentId = dataResult.getString(3);
+                String StudentFaculty = dataResult.getString(4);
+                String StudentDepartment = dataResult.getString(5);
+                String StudentGeneration = dataResult.getString(6);
+                int StudentSemester = dataResult.getInt(7);
+                int StudentCredit = dataResult.getInt(8);
+
+                String[] data = {StudentName, StudentId, StudentFaculty, StudentDepartment, StudentGeneration, StudentGeneration, Integer.toString(StudentSemester), Integer.toString(StudentCredit)};
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "An error occured during getting connection to database", "Connection failed.", JOptionPane.ERROR_MESSAGE);
+
+            // Kembali ke halaman awal jika terjadi kesalahan.
+            this.setVisible(false);
+            new Home().setVisible(true);
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -157,7 +196,6 @@ public class Admin_TransactionList extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_editMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_editMouseClicked
-        // TODO add your handling code here:
         this.setVisible(false);
         new Admin_Edit_data().setVisible(true);
     }//GEN-LAST:event_btn_editMouseClicked
