@@ -10,199 +10,239 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
 /**
- *
  * @author zen
  */
 public class Admin_TransactionList extends javax.swing.JFrame {
 
-    /**
-     * Creates new form History_Transaction
-     */
-    public Admin_TransactionList() {
-        initComponents();
-        setLocationRelativeTo(null);
+	/**
+	 * Creates new form History_Transaction
+	 */
+	public Admin_TransactionList() {
+		initComponents();
+		setLocationRelativeTo(null);
+		setResizable(false);
 
-        // TODO: TAMBAHKAN QUERY DAN TAMPILKAN DALAM BENTUK TABEL.
-        try {
-            String DriverUrl = "jdbc:mysql://localhost:8001/akademik";
-            Connection connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970");
+		try {
+			String DriverUrl = "jdbc:mysql://localhost:8001/akademik";
+			Connection connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970");
 
-            // Menjalankan query untuk mengambil data pada database.
-            Statement query = (Statement) connection.createStatement();
-            ResultSet dataResult = query.executeQuery("select * from transaction_list");
+			// Menjalankan query untuk mengambil data pada database.
+			Statement query = connection.createStatement();
+			ResultSet dataResult = query.executeQuery("select * from transaction_list");
 
-            // Membuat DefaultTableModel untuk menampilkan data-data yang ada pada database.
-            String[] columnHeaders = {"Name", "Student ID", "Faculty", "Department", "Generation", "Semester", "Course Credit"};
-            DefaultTableModel transactionModel = new DefaultTableModel(columnHeaders, 0);
+			// Membuat DefaultTableModel untuk menampilkan data-data yang ada pada database.
+			String[] columnHeaders = {
+					"Transaction ID",
+					"Name",
+					"Student ID",
+					"Faculty",
+					"Department",
+					"Generation",
+					"Semester",
+					"Course Credit",
+					"Fixed Bill",
+					"Variable Bill",
+					"Total Bill"
+			};
+			DefaultTableModel transactionModel = new DefaultTableModel(columnHeaders, 0) {
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
 
-            while (dataResult.next()) {
-                // Variabel untuk menampung data yang telah diambil dari database.
-                String StudentName = dataResult.getString(2);
-                String StudentId = dataResult.getString(3);
-                String StudentFaculty = dataResult.getString(4);
-                String StudentDepartment = dataResult.getString(5);
-                String StudentGeneration = dataResult.getString(6);
-                int StudentSemester = dataResult.getInt(7);
-                int StudentCredit = dataResult.getInt(8);
+			while (dataResult.next()) {
+				// Variabel untuk menampung data yang telah diambil dari database.
+				int TransactionId = dataResult.getInt(1);
+				String StudentName = dataResult.getString(2);
+				String StudentId = dataResult.getString(3);
+				String StudentFaculty = dataResult.getString(4);
+				String StudentDepartment = dataResult.getString(5);
+				String StudentGeneration = dataResult.getString(6);
+				int StudentSemester = dataResult.getInt(7);
+				int StudentCredit = dataResult.getInt(8);
+				double FixedBill = dataResult.getDouble(9);
+				double VariableBill = dataResult.getDouble(10);
+				double TotalBill = dataResult.getDouble(11);
 
-                String[] data = {StudentName, StudentId, StudentFaculty, StudentDepartment, StudentGeneration, StudentGeneration, Integer.toString(StudentSemester), Integer.toString(StudentCredit)};
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "An error occured during getting connection to database", "Connection failed.", JOptionPane.ERROR_MESSAGE);
+				// Data yang akan dimasukkan pada baris tabel.
+				String[] data = {
+						String.valueOf(TransactionId),
+						StudentName,
+						StudentId,
+						StudentFaculty,
+						StudentDepartment,
+						StudentGeneration,
+						String.valueOf(StudentSemester),
+						String.valueOf(StudentCredit),
+						String.valueOf(FixedBill),
+						String.valueOf(VariableBill),
+						String.valueOf(TotalBill)
+				};
+				transactionModel.addRow(data); // Menambahkan baris baru menggunakan variabel data yang telah dibuat.
+			}
+			tbl_TransactionList.setModel(transactionModel);
+			connection.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(this, "An error occured during getting connection to database", "Connection failed.", JOptionPane.ERROR_MESSAGE);
 
-            // Kembali ke halaman awal jika terjadi kesalahan.
-            this.setVisible(false);
-            new Home().setVisible(true);
-            e.printStackTrace();
-        }
-    }
+			// Kembali ke halaman awal jika terjadi kesalahan.
+			this.setVisible(false);
+			new Home().setVisible(true);
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+	/**
+	 * This method is called from within the constructor to initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is always
+	 * regenerated by the Form Editor.
+	 */
+	@SuppressWarnings("unchecked")
+	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+	private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jLabel3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_TransactionList = new javax.swing.JTable();
-        btn_edit = new javax.swing.JButton();
-        btn_delete = new javax.swing.JButton();
+		jPanel1 = new javax.swing.JPanel();
+		jPanel2 = new javax.swing.JPanel();
+		jLabel1 = new javax.swing.JLabel();
+		jLabel2 = new javax.swing.JLabel();
+		jSeparator1 = new javax.swing.JSeparator();
+		jLabel3 = new javax.swing.JLabel();
+		jScrollPane1 = new javax.swing.JScrollPane();
+		tbl_TransactionList = new javax.swing.JTable();
+		btn_edit = new javax.swing.JButton();
+		btn_delete = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel1.setText("TUITION PAYMENT FORM");
+		jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+		jLabel1.setText("TUITION PAYMENT FORM");
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel2.setText("UNIVERSITAS TEKNOLOGI YOGYAKARTA");
+		jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+		jLabel2.setText("UNIVERSITAS TEKNOLOGI YOGYAKARTA");
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(360, 360, 360)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addGap(360, 360, 360))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+		jPanel2.setLayout(jPanel2Layout);
+		jPanel2Layout.setHorizontalGroup(
+				jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(jPanel2Layout.createSequentialGroup()
+								.addGap(360, 360, 360)
+								.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+										.addComponent(jLabel2)
+										.addComponent(jLabel1))
+								.addGap(360, 360, 360))
+						.addGroup(jPanel2Layout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(jSeparator1))
+		);
+		jPanel2Layout.setVerticalGroup(
+				jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(jPanel2Layout.createSequentialGroup()
+								.addGap(18, 18, 18)
+								.addComponent(jLabel1)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(jLabel2)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addContainerGap())
+		);
 
-        jLabel3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel3.setText("Transaction List");
+		jLabel3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+		jLabel3.setText("Transaction List");
 
-        tbl_TransactionList.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(tbl_TransactionList);
+		tbl_TransactionList.setModel(new javax.swing.table.DefaultTableModel(
+				new Object[][]{
+						{null, null, null, null},
+						{null, null, null, null},
+						{null, null, null, null},
+						{null, null, null, null}
+				},
+				new String[]{
+						"Title 1", "Title 2", "Title 3", "Title 4"
+				}
+		));
+		jScrollPane1.setViewportView(tbl_TransactionList);
 
-        btn_edit.setBackground(new java.awt.Color(58, 120, 58));
-        btn_edit.setForeground(new java.awt.Color(255, 255, 255));
-        btn_edit.setText("Edit Data");
-        btn_edit.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btn_editMouseClicked(evt);
-            }
-        });
+		btn_edit.setBackground(new java.awt.Color(58, 120, 58));
+		btn_edit.setForeground(new java.awt.Color(255, 255, 255));
+		btn_edit.setText("Edit Data");
+		btn_edit.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				btn_editMouseClicked(evt);
+			}
+		});
 
-        btn_delete.setBackground(new java.awt.Color(127, 35, 35));
-        btn_delete.setForeground(new java.awt.Color(255, 255, 255));
-        btn_delete.setText("Delete Data");
+		btn_delete.setBackground(new java.awt.Color(127, 35, 35));
+		btn_delete.setForeground(new java.awt.Color(255, 255, 255));
+		btn_delete.setText("Delete Data");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(btn_edit, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(32, 32, 32)
-                            .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_edit, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
-                .addGap(29, 29, 29))
-        );
+		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+		jPanel1.setLayout(jPanel1Layout);
+		jPanel1Layout.setHorizontalGroup(
+				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(jPanel1Layout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addGroup(jPanel1Layout.createSequentialGroup()
+								.addGap(52, 52, 52)
+								.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+										.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+												.addGroup(jPanel1Layout.createSequentialGroup()
+														.addComponent(btn_edit, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+														.addGap(32, 32, 32)
+														.addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+												.addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1163, javax.swing.GroupLayout.PREFERRED_SIZE))
+										.addComponent(jLabel3))
+								.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		jPanel1Layout.setVerticalGroup(
+				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(jPanel1Layout.createSequentialGroup()
+								.addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addComponent(jLabel3)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+								.addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGap(18, 18, 18)
+								.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+										.addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(btn_edit, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
+								.addGap(29, 29, 29))
+		);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
-        );
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setHorizontalGroup(
+				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(layout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addContainerGap())
+		);
+		layout.setVerticalGroup(
+				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(layout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addContainerGap(12, Short.MAX_VALUE))
+		);
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+		pack();
+	}// </editor-fold>//GEN-END:initComponents
 
-    private void btn_editMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_editMouseClicked
-        this.setVisible(false);
-        new Admin_Edit_data().setVisible(true);
-    }//GEN-LAST:event_btn_editMouseClicked
+	// TODO: Tambahkan event untuk tombol menghapus data disini.
 
-    /**
-     * @param args the command line arguments
-     */
+	private void btn_editMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_editMouseClicked
+		Object dataObject = tbl_TransactionList.getValueAt(tbl_TransactionList.getSelectedRow(), 0);
+
+		this.setVisible(false);
+		new Admin_Edit_Data(Integer.parseInt(dataObject.toString())).setVisible(true);
+	}//GEN-LAST:event_btn_editMouseClicked
+
+	/**
+	 * @param args the command line arguments
+	 */
 //    public static void main(String args[]) {
 //        /* Set the Nimbus look and feel */
 //        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -236,16 +276,16 @@ public class Admin_TransactionList extends javax.swing.JFrame {
 //        });
 //    }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_delete;
-    private javax.swing.JButton btn_edit;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable tbl_TransactionList;
-    // End of variables declaration//GEN-END:variables
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JButton btn_delete;
+	private javax.swing.JButton btn_edit;
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JLabel jLabel2;
+	private javax.swing.JLabel jLabel3;
+	private javax.swing.JPanel jPanel1;
+	private javax.swing.JPanel jPanel2;
+	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JSeparator jSeparator1;
+	private javax.swing.JTable tbl_TransactionList;
+	// End of variables declaration//GEN-END:variables
 }
