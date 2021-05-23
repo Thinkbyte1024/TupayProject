@@ -342,7 +342,7 @@ public class Form_SPP_Mahasiswa extends javax.swing.JFrame {
 			JOptionPane.showMessageDialog(this, "Failed to save a data. Please try again.", "Error occured.", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
-		this.setVisible(false);
+		dispose();
 		new Home().setVisible(true);
 
 		// Diusangkan untuk sementara.

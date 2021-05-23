@@ -6,6 +6,8 @@
 package tupayproject;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.sql.*;
 
 /**
@@ -143,11 +145,16 @@ public class Home extends javax.swing.JFrame {
 	}//GEN-LAST:event_btn_masuk_mahasiswaActionPerformed
 
 	private void btn_masuk_mahasiswaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_masuk_mahasiswaMouseClicked
-		this.setVisible(false);
+		dispose();
 		new Form_SPP_Mahasiswa().setVisible(true);
 	}//GEN-LAST:event_btn_masuk_mahasiswaMouseClicked
 
 	private void btn_masuk_adminMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_masuk_adminMouseClicked
+
+		// Header dialog
+		JLabel headerDialog = new JLabel("Enter an administrator username and password.", JLabel.CENTER);
+		headerDialog.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
+		headerDialog.setBorder(new EmptyBorder(12, 0, 12, 0));
 
 		// Komponen untuk membuat dialog username dan password.
 		JTextField usernameInput = new JTextField();
@@ -157,12 +164,13 @@ public class Home extends javax.swing.JFrame {
 		passwordInput.setColumns(24);
 
 		final JComponent[] inputs = new JComponent[]{
+				headerDialog,
 				new JLabel("Username"), usernameInput,
 				new JLabel("Password"), passwordInput
 		};
 
 		// Menampilkan dialog autentikasi.
-		int result = JOptionPane.showConfirmDialog(this, inputs, "Authentication", JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, inputs, "Authentication required", JOptionPane.PLAIN_MESSAGE);
 		if (result == JOptionPane.OK_OPTION) {
 			try {
 				String DriverUrl = "jdbc:mysql://localhost:8001/akademik";
@@ -179,7 +187,7 @@ public class Home extends javax.swing.JFrame {
 						// Jika username dan password benar maka halaman Admin_TransactionList() akan muncul. Jika tidak maka akan ditampilkan sebuah pesan kesalahan.
 						// Pada kondisi ini juga terdapat kelas DataHash yang berfungsi untuk mengubah String pada variabel stringPass menjadi SHA-256 dengan alasan untuk keamanan akun admin.
 						if (usernameInput.getText().equals(data.getString(2)) && DataHash.SHA256Text(stringPass).equals(data.getString(3))) {
-							this.setVisible(false);
+							dispose();
 							new Admin_TransactionList().setVisible(true);
 							break;
 						} else {

@@ -87,7 +87,7 @@ public class Admin_TransactionList extends javax.swing.JFrame {
 			JOptionPane.showMessageDialog(this, "An error occured during getting connection to database", "Connection failed.", JOptionPane.ERROR_MESSAGE);
 
 			// Kembali ke halaman awal jika terjadi kesalahan.
-			this.setVisible(false);
+			dispose();
 			new Home().setVisible(true);
 			e.printStackTrace();
 		}

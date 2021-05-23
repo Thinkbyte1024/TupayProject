@@ -407,7 +407,7 @@ public class Admin_Edit_Data extends javax.swing.JFrame {
 			JOptionPane.showMessageDialog(this, "Error occured during saving data. Please try again.", "Save Error", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
-		this.setVisible(false);
+		dispose();
 		new Admin_TransactionList().setVisible(true);
 	}//GEN-LAST:event_btn_submit_editedMouseClicked
 

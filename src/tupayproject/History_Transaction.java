@@ -5,6 +5,9 @@
  */
 package tupayproject;
 
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
+
 /**
  *
  * @author zen
@@ -14,8 +17,74 @@ public class History_Transaction extends javax.swing.JFrame {
     /**
      * Creates new form History_Transaction
      */
-    public History_Transaction() {
+    public History_Transaction(String studentId) {
         initComponents();
+
+        // TODO: Membuat query SQL yang menampilkan riwayat transaksi berdasarkan ID mahasiswa tersebut.
+        try {
+            String DriverUrl = "jdbc:mysql://localhost:8001/akademik";
+            Connection connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970");
+
+            PreparedStatement queryStatement = connection.prepareStatement("select * from transaction_list where student_id = ?");
+            queryStatement.setString(1, studentId);
+
+            ResultSet dataResult = queryStatement.executeQuery();
+
+            // Membuat DefaultTableModel untuk menampilkan data-data yang ada pada database.
+            String[] columnHeaders = {
+                    "Transaction ID",
+                    "Name",
+                    "Student ID",
+                    "Faculty",
+                    "Department",
+                    "Generation",
+                    "Semester",
+                    "Course Credit",
+                    "Fixed Bill",
+                    "Variable Bill",
+                    "Total Bill"
+            };
+            DefaultTableModel transactionModel = new DefaultTableModel(columnHeaders, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
+            while (dataResult.next()) {
+                // Variabel untuk menampung data yang telah diambil dari database.
+                int TransactionId = dataResult.getInt(1);
+                String StudentName = dataResult.getString(2);
+                String StudentId = dataResult.getString(3);
+                String StudentFaculty = dataResult.getString(4);
+                String StudentDepartment = dataResult.getString(5);
+                String StudentGeneration = dataResult.getString(6);
+                int StudentSemester = dataResult.getInt(7);
+                int StudentCredit = dataResult.getInt(8);
+                double FixedBill = dataResult.getDouble(9);
+                double VariableBill = dataResult.getDouble(10);
+                double TotalBill = dataResult.getDouble(11);
+
+                // Data yang akan dimasukkan pada baris tabel.
+                String[] data = {
+                        String.valueOf(TransactionId),
+                        StudentName,
+                        StudentId,
+                        StudentFaculty,
+                        StudentDepartment,
+                        StudentGeneration,
+                        String.valueOf(StudentSemester),
+                        String.valueOf(StudentCredit),
+                        String.valueOf(FixedBill),
+                        String.valueOf(VariableBill),
+                        String.valueOf(TotalBill)
+                };
+                transactionModel.addRow(data); // Menambahkan baris baru menggunakan variabel data yang telah dibuat.
+            }
+            tbl_HistoryTransaction.setModel(transactionModel);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -150,8 +219,7 @@ public class History_Transaction extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_FinishMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_FinishMouseClicked
-        // TODO add your handling code here:
-        this.setVisible(false);
+        dispose();
         new Home().setVisible(true);
     }//GEN-LAST:event_btn_FinishMouseClicked
 
