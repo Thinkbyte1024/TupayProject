@@ -8,6 +8,7 @@ package tupayproject;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.WindowListener;
 import java.sql.*;
 
 /**
@@ -170,7 +171,7 @@ public class Home extends javax.swing.JFrame {
 		};
 
 		// Menampilkan dialog autentikasi.
-		int result = JOptionPane.showConfirmDialog(this, inputs, "Authentication required", JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, inputs, "Authentication required", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 		if (result == JOptionPane.OK_OPTION) {
 			try {
 				String DriverUrl = "jdbc:mysql://localhost:8001/akademik";

@@ -367,8 +367,6 @@ public class Admin_Edit_Data extends javax.swing.JFrame {
 	}//GEN-LAST:event_btn_resetMouseClicked
 
 	private void btn_submit_editedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_submit_editedMouseClicked
-		// INI DIISI SAMA CRUD (INSERT DATA KE TABEL HISTORY TRANSACTION & TRANSACTION LIST)
-
 		// Kueri untuk menyimpan data hasil edit
 		try {
 			PreparedStatement saveStatement = connection.prepareStatement("update transaction_list " +

@@ -13,9 +13,10 @@ import java.sql.*;
  * @author zen
  */
 public class Admin_TransactionList extends javax.swing.JFrame {
+	Connection connection;
 
 	/**
-	 * Creates new form History_Transaction
+	 * Creates new form Admin_History_TransactionList
 	 */
 	public Admin_TransactionList() {
 		initComponents();
@@ -24,7 +25,7 @@ public class Admin_TransactionList extends javax.swing.JFrame {
 
 		try {
 			String DriverUrl = "jdbc:mysql://localhost:8001/akademik";
-			Connection connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970");
+			connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970");
 
 			// Menjalankan query untuk mengambil data pada database.
 			Statement query = connection.createStatement();
@@ -82,7 +83,6 @@ public class Admin_TransactionList extends javax.swing.JFrame {
 				transactionModel.addRow(data); // Menambahkan baris baru menggunakan variabel data yang telah dibuat.
 			}
 			tbl_TransactionList.setModel(transactionModel);
-			connection.close();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(this, "An error occured during getting connection to database", "Connection failed.", JOptionPane.ERROR_MESSAGE);
 
@@ -175,6 +175,11 @@ public class Admin_TransactionList extends javax.swing.JFrame {
 		btn_delete.setBackground(new java.awt.Color(127, 35, 35));
 		btn_delete.setForeground(new java.awt.Color(255, 255, 255));
 		btn_delete.setText("Delete Data");
+		btn_delete.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				btn_deleteMouseClicked(evt);
+			}
+		});
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
 		jPanel1.setLayout(jPanel1Layout);
@@ -231,14 +236,42 @@ public class Admin_TransactionList extends javax.swing.JFrame {
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
-	// TODO: Tambahkan event untuk tombol menghapus data disini.
-
 	private void btn_editMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_editMouseClicked
-		Object dataObject = tbl_TransactionList.getValueAt(tbl_TransactionList.getSelectedRow(), 0);
-
-		this.setVisible(false);
-		new Admin_Edit_Data(Integer.parseInt(dataObject.toString())).setVisible(true);
+		Object dataObject;
+		if (tbl_TransactionList.getSelectedRow() != -1) {
+			dataObject = tbl_TransactionList.getValueAt(tbl_TransactionList.getSelectedRow(), 0);
+			this.setVisible(false);
+			new Admin_Edit_Data(Integer.parseInt(dataObject.toString())).setVisible(true);
+		} else {
+			JOptionPane.showMessageDialog(null, "Please select a data to continue.", "Select a data", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}//GEN-LAST:event_btn_editMouseClicked
+
+	private void btn_deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_deleteMouseClicked
+		// Menampilkan konfirmasi dialog untuk menghapus data
+		int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this data? you cannot undo this changes.", "Delete data", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+		// Jika dipilih "Yes" maka kueri SQL akan dieksekusi
+		if (choice == JOptionPane.YES_OPTION) {
+			try {
+				Object selectedData = tbl_TransactionList.getValueAt(tbl_TransactionList.getSelectedRow(), 0);
+
+				// Kueri untuk menghapus data yang dipilih
+				PreparedStatement deleteStatement = connection.prepareStatement("delete from transaction_list where transaction_id = ?");
+				deleteStatement.setInt(1, Integer.parseInt(selectedData.toString()));
+
+				// Jalankan kueri SQL
+				deleteStatement.executeUpdate();
+
+				JOptionPane.showMessageDialog(null, "Data has been succesfully deleted.", "Data deleted", JOptionPane.INFORMATION_MESSAGE);
+				dispose();
+				new Admin_TransactionList().setVisible(true);
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Error occured during deleting data. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+		}
+	}//GEN-LAST:event_btn_deleteMouseClicked
 
 	/**
 	 * @param args the command line arguments
