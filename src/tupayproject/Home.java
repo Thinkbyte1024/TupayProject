@@ -174,8 +174,7 @@ public class Home extends javax.swing.JFrame {
 		int result = JOptionPane.showConfirmDialog(this, inputs, "Authentication required", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 		if (result == JOptionPane.OK_OPTION) {
 			try {
-				String DriverUrl = "jdbc:mysql://localhost:8001/akademik";
-				Connection connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970");
+				Connection connection = DBConnection.connectDB("8001"); // Anda dapat menggantinya menjadi 3306 (Port default) jika Anda tidak ingin menggunakan Docker sebagai tempat database.
 
 				Statement validationStatement = connection.createStatement();
 				try {

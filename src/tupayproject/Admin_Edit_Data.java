@@ -20,7 +20,6 @@ public class Admin_Edit_Data extends javax.swing.JFrame {
 	String studentSemester;
 	int studentCredits;
 
-	String DriverUrl = "jdbc:mysql://localhost:8001/akademik"; // Alamat driver untuk MySQL.
 	Connection connection;
 
 	int transactionId;
@@ -39,7 +38,7 @@ public class Admin_Edit_Data extends javax.swing.JFrame {
 		ta_print.setEditable(false);
 
 		try {
-			connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970"); // mendapatkan koneksi melalui alamat variabel DriverUrl
+			connection = DBConnection.connectDB("8001"); // Anda dapat menggantinya menjadi 3306 (Port default) jika Anda tidak ingin menggunakan Docker sebagai tempat database.
 
 			PreparedStatement formStatement = connection.prepareStatement("select * from transaction_list where transaction_id = ?");
 			formStatement.setInt(1, transactionId);

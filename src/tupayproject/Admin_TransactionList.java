@@ -24,14 +24,13 @@ public class Admin_TransactionList extends javax.swing.JFrame {
 		setResizable(false);
 
 		try {
-			String DriverUrl = "jdbc:mysql://localhost:8001/akademik";
-			connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970");
+			connection = DBConnection.connectDB("8001"); // Anda dapat menggantinya menjadi 3306 (Port default) jika Anda tidak ingin menggunakan Docker sebagai tempat database.
 
 			// Menjalankan query untuk mengambil data pada database.
 			Statement query = connection.createStatement();
 			ResultSet dataResult = query.executeQuery("select * from transaction_list");
 
-			// Membuat DefaultTableModel untuk menampilkan data-data yang ada pada database.
+			// Membuat Jenis-jenis kolom untuk menampilkan data-data yang ada pada database.
 			String[] columnHeaders = {
 					"Transaction ID",
 					"Name",
@@ -45,6 +44,8 @@ public class Admin_TransactionList extends javax.swing.JFrame {
 					"Variable Bill",
 					"Total Bill"
 			};
+
+			// Menggabungkan kolom-kolom yang telah dibuat kedalam DefaultTableModel.
 			DefaultTableModel transactionModel = new DefaultTableModel(columnHeaders, 0) {
 				@Override
 				public boolean isCellEditable(int row, int column) {

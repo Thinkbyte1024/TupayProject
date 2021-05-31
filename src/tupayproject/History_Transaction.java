@@ -5,32 +5,29 @@
  */
 package tupayproject;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 
-/**
- *
- * @author zen
- */
 public class History_Transaction extends javax.swing.JFrame {
 
     /**
      * Creates new form History_Transaction
      */
-    public History_Transaction(String studentId) {
+    public History_Transaction(String studentName) {
         initComponents();
+        setLocationRelativeTo(null);
 
-        // TODO: Membuat query SQL yang menampilkan riwayat transaksi berdasarkan ID mahasiswa tersebut.
         try {
-            String DriverUrl = "jdbc:mysql://localhost:8001/akademik";
-            Connection connection = DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970");
+            Connection connection = DBConnection.connectDB("8001"); // Anda dapat menggantinya menjadi 3306 (Port default) jika Anda tidak ingin menggunakan Docker sebagai tempat database.
 
-            PreparedStatement queryStatement = connection.prepareStatement("select * from transaction_list where student_id = ?");
-            queryStatement.setString(1, studentId);
+            // Menjalankan query SQL yang akan mengambil data riwayat transaksi mahasiswa berdasarkan nama mahasiswa tersebut.
+            PreparedStatement queryStatement = connection.prepareStatement("select * from transaction_list where student_name like ?");
+            queryStatement.setString(1, '%' + studentName + '%');
 
             ResultSet dataResult = queryStatement.executeQuery();
 
-            // Membuat DefaultTableModel untuk menampilkan data-data yang ada pada database.
+            // Membuat Jenis-jenis kolom untuk menampilkan data-data yang ada pada database.
             String[] columnHeaders = {
                     "Transaction ID",
                     "Name",
@@ -44,6 +41,8 @@ public class History_Transaction extends javax.swing.JFrame {
                     "Variable Bill",
                     "Total Bill"
             };
+
+            // Menggabungkan kolom-kolom yang telah dibuat kedalam DefaultTableModel.
             DefaultTableModel transactionModel = new DefaultTableModel(columnHeaders, 0) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
@@ -83,6 +82,7 @@ public class History_Transaction extends javax.swing.JFrame {
             }
             tbl_HistoryTransaction.setModel(transactionModel);
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error occured during connecting to database. Your data has been saved.", "View error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }
