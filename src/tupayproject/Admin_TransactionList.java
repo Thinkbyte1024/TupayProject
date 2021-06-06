@@ -239,7 +239,10 @@ public class Admin_TransactionList extends javax.swing.JFrame {
 
 	private void btn_editMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_editMouseClicked
 		Object dataObject;
+
+		// Memeriksa jika Admin telah memilih data yang ingin di ubah. Jika tidak maka tampilkan dialog kesalahan.
 		if (tbl_TransactionList.getSelectedRow() != -1) {
+			// Mengambil nilai pada kolom "Transaction ID" untuk diberikan pada form Admin_Edit_Data.
 			dataObject = tbl_TransactionList.getValueAt(tbl_TransactionList.getSelectedRow(), 0);
 			this.setVisible(false);
 			new Admin_Edit_Data(Integer.parseInt(dataObject.toString())).setVisible(true);
