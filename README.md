@@ -15,7 +15,7 @@ Pastikan Anda sudah memiliki aplikasi **Docker** di komputer Anda. Jika tidak si
 
 #### Windows
 1. Pada aplikasi Command Prompt (cmd) atau PowerShell, buka folder bernama "database" lalu "mysql-docker" menggunakan syntax berikut:
-`cd <tempat-project-repo\database\mysql-docker` ganti <tempat-project-repo> dengan tempat asal project ini.
+`cd <tempat-project-repo>\database\mysql-docker` ganti <tempat-project-repo> dengan tempat asal project ini.
 2. Setelah itu eksekusi perintah berikut dalam directory tersebut pada CMD atau PowerShell:
 `docker compose up -d`
 
