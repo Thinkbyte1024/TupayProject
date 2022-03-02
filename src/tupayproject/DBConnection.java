@@ -12,6 +12,6 @@ public class DBConnection {
 	 */
 	public static Connection connectDB(String port) throws SQLException {
 		String DriverUrl = "jdbc:mysql://localhost:" + port + "/akademik";
-		return DriverManager.getConnection(DriverUrl, "db-operator", "dockerized1970");
+		return DriverManager.getConnection(DriverUrl, "${DB_USERNAME}", "${DB_PASS}");
 	}
 }
